@@ -1,49 +1,21 @@
-var gProjs = [
-    {
-        id: "minesweeper",
-        name: "minesweeper",
-        title: "minesweeper game",
-        desc: "minesweeper game",
-        url: "projs/minesweeper",
-        publishedAt: 1448693940000,
-        labels: ["Matrixes", "keyboard events"],
-    },
-    {
-        id: "bookshop",
-        name: "bookshop",
-        title: "bookshop application",
-        desc: "Track what you are reading ",
-        url: "projs/bookshop",
-        publishedAt: 1448693940000,
-        labels: ["Matrixes", "keyboard events"],
-    },
-    {
-        id: "pacman",
-        name: "pacman",
-        title: "pacman game",
-        desc: "Enjoy the classic pacman ",
-        url: "projs/pacman",
-        publishedAt: 1448693940000,
-        labels: ["Matrixes", "keyboard events"],
-    },
-]
 
-$(document).ready(initPage)
+$(initPage)
 
 function initPage() {
     renderProjects()
 }
 
 function renderProjects() {
-    var strHtmls = gProjs.map(proj => `
-    <div class="col-md-4 col-sm-6 portfolio-item">
-    <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
+  var projs = getProj()
+    var strHtmls = projs.map(proj => `
+    <div class="col-md-4 col-sm-6 portfolio-item" data-toggle="modal" href="#portfolioModal1">
+    <a class="portfolio-link" onclick="renderModal('${proj.id}')">
                 <div class="portfolio-hover">
                 <div class="portfolio-hover-content">
                 <i class="fa fa-plus fa-3x"></i>
                 </div>
                 </div>
-                <img class="img-fluid" src="img/portfolio/${proj.id}.png" alt="">
+                <img class="img-fluid" src="img/portfolio/${proj.id}.png" alt="${proj.name}">
                 </a>
                 <div class="portfolio-caption">
                 <h4>${proj.name}</h4>
@@ -53,4 +25,37 @@ function renderProjects() {
                 `
     )
     $('.bg-light .row-proj').html(strHtmls)
+}
+
+function renderModal(id) {
+    const proj = getProjById(id)
+    var strHtmls = `
+    <!-- Project Details Go Here -->
+    <h2>${proj.name}</h2>
+    <p class="item-intro text-muted">${proj.title}</p>
+    <img class="img-fluid d-block mx-auto" src="img/portfolio/${proj.id}.png" alt="${proj.name}">
+    <p>${proj.desc}</p>
+    <ul class="list-inline">
+      <li>Published at ${getDate(proj.publishedAt)}</li>
+      <li>Category: ${proj.labels}</li>
+    
+      <a id="link" href="${proj.url}" target="_blank" >Try It!</a>
+
+    </ul>
+    <button class="btn btn-primary" data-dismiss="modal" type="button">
+        <i class="fa fa-times"></i>
+        Close Project</button>
+`
+$('.modal-body').html(strHtmls)
+    
+}
+
+function getProjById(projId) {
+    const proj = gProjs.find(proj => projId === proj.id)
+    return proj
+}
+
+function onFormSubmit(){
+console.log('a');
+var $email = $('.email').val()
 }
